@@ -5,12 +5,12 @@ import TableCell from "@mui/material/TableCell";
 import TableRow from "@mui/material/TableRow";
 
 function Book() {
-  const { allBooks } = useContext(BookContext);
+  const { allBooks, listOfBooks } = useContext(BookContext);
 
   return (
     <>
-      {allBooks.map((row, index) => (
-        <TableRow key={index}>
+      {listOfBooks.map((row, index) => (
+        <TableRow key={index} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
           <TableCell>{row.author}</TableCell>
           <TableCell>{row.title}</TableCell>
           <TableCell>{row.pages}</TableCell>
