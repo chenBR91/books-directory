@@ -13,6 +13,10 @@ import {
   getAllBooksSortByPagesController,
 } from "./controller/Bookes.js";
 
+import { getWeatherByCityController, weatherByLatitudeandLongitude } from "./controller/Weather.js";
+
+import { getIpAdressController, getLocationByAddressController } from "./controller/IpAdress.js";
+
 dotenv.config();
 const { PORT, DB_USER, DB_PASSWORD, DB_HOST, DB_NAME } = process.env;
 
@@ -27,11 +31,21 @@ mongoose.set("strictQuery", true);
 // Routes for Books
 app.get("/api/books/all-books", getAllBooksController);
 app.get("/api/books/detail/:id", getDetailBookController);
-app.get("/api/books/sort-pages/", getAllBooksSortByPagesController)
+app.get("/api/books/sort-pages/", getAllBooksSortByPagesController);
 app.post("/api/books/create", createNewBookController);
 app.delete("/api/books/delete/:id", deleteBookController);
-app.put("/api/books/update/:id", updateBookController)
+app.put("/api/books/update/:id", updateBookController);
 //app.post("/api/books/create-many-books", createManyBoobsControoler)
+
+
+// Routes for Weather
+app.get("/api/weather/city", getWeatherByCityController);
+app.post("/api/weather/current-location", weatherByLatitudeandLongitude)
+
+
+// Routes for ip address
+app.get("/api/ip/address", getIpAdressController);
+app.get("/api/ip/location", getLocationByAddressController)
 
 
 mongoose.connect(

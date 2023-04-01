@@ -11,7 +11,7 @@ import {
 export const getAllBooksController = async (req, res) => {
   try {
     const books = await getAllBooks();
-    console.log("books", books);
+    // console.log("books", books);
     res.status(200).send(books);
   } catch (err) {
     console.log("err");

@@ -1,23 +1,41 @@
 import React, { useState, useEffect } from "react";
 import { BrowserRouter as Router } from "react-router-dom";
 import BookContext from "./BookContext.js";
-import SortContext from "./SortContext.js"
+import SortContext from "./SortContext.js";
+import LocationContext from "./LocationContext.js";
 import Main from "./Main";
 import "./App.css";
 
 const App = () => {
   const [books, setBooks] = useState([]);
-  const [listOfBooks, setListOfBooks] = useState([])
+
+  const [location, setLocation] = useState({
+    latitude: "50",
+    longitude: "50",
+  });
+
+  const [listOfBooks, setListOfBooks] = useState([]);
+
   const [sortParameter, setSortParameter] = useState({
-    year: true, 
+    year: true,
     page: true,
-    author: ""
+    author: "",
   });
 
   useEffect(() => {
     uploadAllData();
-    //setListOfBooks(books);
+    navigatorLocation();
   }, []);
+
+
+  // location of users 
+  const navigatorLocation = () => {
+    window.navigator.geolocation.getCurrentPosition((position)=>setLocation({
+        latitude: position['coords'].latitude, 
+        longitude: position['coords'].longitude
+      }))
+  }
+
 
   const uploadAllData = async () => {
     try {
@@ -25,7 +43,9 @@ const App = () => {
       //const res = await fetch(urlGetAllBooks);
       //const answer = await res.json();
       //setBooks(answer);
-      fetch('http://localhost:8000/api/books/all-books').then(data => data.json()).then(data => setBooks(data))
+      fetch("http://localhost:8000/api/books/all-books")
+        .then((data) => data.json())
+        .then((data) => setBooks(data));
     } catch (err) {
       console.log("err", err);
     }
@@ -45,17 +65,24 @@ const App = () => {
   };
 
   const sortValueBooks = {
-    sortParameter, 
-    setSortParameter
-  }
+    sortParameter,
+    setSortParameter,
+  };
+
+  const locationValue = {
+    location,
+    setLocation,
+  };
 
   return (
     <Router>
       <BookContext.Provider value={bookValue}>
         <SortContext.Provider value={sortValueBooks}>
-        <div>
-          <Main />
-        </div>
+          <LocationContext.Provider value={locationValue}>
+            <div>
+              <Main />
+            </div>
+          </LocationContext.Provider>
         </SortContext.Provider>
       </BookContext.Provider>
     </Router>
