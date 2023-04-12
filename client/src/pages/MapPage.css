@@ -1,0 +1,22 @@
+
+
+.map-box {
+    display: flex;
+    /* flex-wrap: nowrap; */
+    justify-content: center;
+    border: 1px solid red;
+}
+
+
+.content {
+    height: 207px;
+    border: solid red;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.footer {
+    display: flex;
+    justify-content: space-evenly;
+}

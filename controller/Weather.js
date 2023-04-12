@@ -13,6 +13,7 @@ export const getWeatherByCityController = async (req, res) => {
   }
 };
 
+
 export const weatherByLatitudeandLongitude = async (req, res) => {
   try {
     // const currentLocation = req.body;

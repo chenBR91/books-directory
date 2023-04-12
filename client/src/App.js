@@ -15,7 +15,6 @@ const App = () => {
   });
 
   const [listOfBooks, setListOfBooks] = useState([]);
-
   const [sortParameter, setSortParameter] = useState({
     year: true,
     page: true,
@@ -23,21 +22,56 @@ const App = () => {
   });
 
   useEffect(() => {
-    uploadAllData();
+    //debugger;
+    //uploadAllDataBooks();
     navigatorLocation();
   }, []);
 
 
   // location of users 
+  // Current location
+
+  // const navigatorLocation = () => {
+  //   navigator.geolocation.getCurrentPosition((position) => {console.log('fs', position.coords.latitude)})
+  // }
+
+  const options = {
+    enableHighAccuracy: true,
+    timeout: 10000,
+  };
+
+
+  const successCallback = (position) => {
+    setLocation({
+      latitude: position['coords'].latitude, 
+      longitude: position['coords'].longitude
+    })
+  };
+  
+  const errorCallback = (error) => {
+    console.log(error);
+  };
+
+  // const navigatorLocation = () => {
+  //   window.navigator.geolocation.getCurrentPosition((position) => setLocation({
+  //       latitude: position['coords'].latitude, 
+  //       longitude: position['coords'].longitude
+  //     }))
+  // }
+
   const navigatorLocation = () => {
-    window.navigator.geolocation.getCurrentPosition((position)=>setLocation({
-        latitude: position['coords'].latitude, 
-        longitude: position['coords'].longitude
-      }))
+    window.navigator.geolocation.getCurrentPosition(successCallback, errorCallback, options )
   }
 
 
-  const uploadAllData = async () => {
+
+  useEffect(()=>{
+    console.log('latitude', location.latitude);
+    console.log('longitude', location.longitude);
+  },[location.latitude, location.longitude])
+
+
+  const uploadAllDataBooks = async () => {
     try {
       //const urlGetAllBooks = "http://localhost:8000/api/books/all-books";
       //const res = await fetch(urlGetAllBooks);

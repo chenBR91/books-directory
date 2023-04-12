@@ -11,7 +11,8 @@ import IconButton from "@mui/material/IconButton";
 
 function Header() {
     const [temperature, setTemperature] = useState(null)
-  const { location } = useContext(LocationContext);
+    const [country, setCountry] = useState("")
+    const { location } = useContext(LocationContext);
 
   useEffect(() => {
     currentWeather()
@@ -25,12 +26,12 @@ function Header() {
 
   const currentWeather = async() => {
     try {
-        console.log('weather');
         const url = 'http://localhost:8000/api/weather/current-location'
         const getCurrentWeather = await axios.post(url, location)
         const temperature = getCurrentWeather['data']['main']['temp']
+        const {name} = getCurrentWeather['data']
+        setCountry(name) 
         setTemperature(temperature)
-       console.log('getCurrentWeather', getCurrentWeather['data'], temperature);
     }
 
     catch(err) {
@@ -55,7 +56,7 @@ function Header() {
             News
           </Typography>
           <Button color="inherit">Login</Button>
-          <div>Temp: {temperature}</div>
+          <div>{country} {temperature}</div>
         </Toolbar>
       </AppBar>
     </Box>
