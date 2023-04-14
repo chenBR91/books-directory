@@ -8,33 +8,37 @@ import Map, {
   Popup,
 } from "react-map-gl";
 import "mapbox-gl/dist/mapbox-gl.css";
-import Pin from "./Pin.js";
+// import Pin from "./Pin.js";
 import axios from "axios";
 
 function MapView() {
   const mapRef = useRef();
-  const [markerLocation, setMarkerLocation] = useState({
-    latitude: "",
-    longitude: "",
-  });
-
+  const [rtusData, setRtusData] = useState([])
   const [allMarkerLocationObj, setAllMarkerLocationObj] = useState([]);
-  const [showPopup, setShowPopup] = useState(true);
   const [popupInfo, setPopupInfo] = useState(null);
 
+
   useEffect(() => {
-    uploadAllLocation();
+    //uploadAllLocation();
+    uploadAllRtus();
   }, []);
 
   useEffect(() => {
     console.log("allMarkerLocationObj", allMarkerLocationObj);
   }, [allMarkerLocationObj]);
 
-  const uploadAllLocation = () => {
-    axios.get("http://localhost:8000/api/location/all").then((res) => {
-      setAllMarkerLocationObj(res["data"]);
-    });
-  };
+
+  // const uploadAllLocation = () => {
+  //   axios.get("http://localhost:8000/api/location/all").then((res) => {
+  //     setAllMarkerLocationObj(res["data"]);
+  //   });
+  // };
+
+  const uploadAllRtus = () => {
+    axios.get("http://localhost:8000/api/rtus/all/show-all").then(res => {
+      setRtusData(res["data"])
+    })
+  }
 
   const geolocateControlRef = useCallback((ref) => {
     if (ref) {
@@ -81,11 +85,11 @@ function MapView() {
           <Pin />
         </Marker> */}
 
-        {allMarkerLocationObj.map((showMarker, index) => (
+        {rtusData.map((showMarker, index) => (
           <Marker
             key={index}
-            longitude={showMarker["longitude"]}
-            latitude={showMarker["latitude"]}
+            longitude={showMarker.location["longitude"]}
+            latitude={showMarker.location["latitude"]}
             anchor="bottom"
             onClick={e => {
               e.originalEvent.stopPropagation();
@@ -98,18 +102,17 @@ function MapView() {
         {popupInfo && (
           <Popup
             anchor="top"
-            longitude={Number(popupInfo.longitude)}
-            latitude={Number(popupInfo.latitude)}
+            longitude={Number(popupInfo.location.longitude)}
+            latitude={Number(popupInfo.location.latitude)}
             onClose={() => setPopupInfo(null)}
           >
             <div>
-              {popupInfo.longitude}, {popupInfo.latitude}
-              test popup
+              {popupInfo.location.longitude}, {popupInfo.location.latitude}
+              <div>Unit: {popupInfo.macAddress}</div>
+              <div>Rssi: {popupInfo.rssi}</div>
             </div>
           </Popup>
         )}
-
-        
 
       </Map>
     </div>

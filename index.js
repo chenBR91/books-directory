@@ -33,7 +33,8 @@ import {
 import {
   createNewRtuController,
   getAllRtusController,
-  deleteOneRtuByIdController
+  deleteOneRtuByIdController,
+  updateRtuParameters,
 } from "./controller/Rtus.js";
 
 dotenv.config();
@@ -74,7 +75,7 @@ app.delete("/api/location/delete/all", deleteAllLocationsController);
 app.post("/api/rtus/create/new-device", createNewRtuController);
 app.get("/api/rtus/all/show-all", getAllRtusController)
 app.delete("/api/rtu/delete/one-unit/:id", deleteOneRtuByIdController)
-
+app.put("/api/rtu/update/:id", updateRtuParameters)
 
 mongoose.connect(
   `mongodb+srv://${DB_USER}:${DB_PASSWORD}@${DB_HOST}/${DB_NAME}`,

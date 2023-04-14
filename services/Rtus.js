@@ -22,4 +22,6 @@ export const deleteOneRtuById = (id) => {
     return RtusModel.deleteOne({_id: id})
 }
 
-
+export const updateRtuByMacAddress = (id, obj) => {
+  return RtusModel.updateOne({_id: id}, { $set: obj })
+}

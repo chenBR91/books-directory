@@ -4,6 +4,7 @@ import {
   isExistRtu,
   deleteOneRtuById,
   getOneRtuById,
+  updateRtuByMacAddress,
 } from "../services/Rtus.js";
 
 import { deleteOneLocation } from "../services/Locations.js";
@@ -28,7 +29,17 @@ export const createNewRtuController = async (req, res) => {
 export const getAllRtusController = async (req, res) => {
   try {
     const rtus = await getAllRtus();
-    res.status(200).send(rtus);
+
+
+    const resultObj = rtus.map(result => {
+      const {macAddress, rssi, location, _id} = result;
+      return {macAddress, rssi, location, _id}
+    })
+    console.log('resultObj', resultObj);
+    
+    res.status(200).send(resultObj)
+    //res.status(200).send(rtus);
+
   } catch (err) {
     res.status(500).send(err);
   }
@@ -53,3 +64,38 @@ export const deleteOneRtuByIdController = async (req, res) => {
     res.status(400).send(err);
   }
 };
+
+
+// allow to update only rssi
+const allowUpdateParamers = ['rssi']
+
+export const updateRtuParameters = async (req, res) => {
+  try {
+    const {id} = req.params;
+    //const {macAddress} = req.body;
+
+    const objectKeys = Object.keys(req.body)
+    const isEveryContainParams = allowUpdateParamers.every((item) => {
+      return objectKeys.includes(item)
+    })
+
+    if(!isEveryContainParams) {
+      res.status(202).send({message: "rssi is not exist"})
+    }
+
+    // create object to only update allow parameter
+    const updateThisObj = {}
+    allowUpdateParamers.forEach((elem) => {
+      if(objectKeys.includes(elem)) {
+        updateThisObj[elem] = req.body[elem]
+      }
+    });
+    // console.log('updateObj', updateThisObj);
+    
+    const updated = await updateRtuByMacAddress(id, updateThisObj);
+    res.status(200).send(updated);
+
+  } catch( err) {
+    res.status(500).send(err)
+  }
+}
