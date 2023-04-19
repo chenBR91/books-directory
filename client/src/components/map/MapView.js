@@ -75,7 +75,7 @@ function MapView() {
         //onClick={handdleClickOnMap}
         style={{ width: "100%", height: "600px" }}
         mapStyle="mapbox://styles/mapbox/streets-v12"
-        mapboxAccessToken="pk.eyJ1IjoiY2hlbmJyOTEiLCJhIjoiY2xnNHZ0a2xiMDBvZjNlcGNkZWpoZjZiNSJ9.feWt9wScK17G2YobIyQePA"
+        mapboxAccessToken= {process.env.REACT_APP_MAPBOX_TOKEN}
       >
         <FullscreenControl />
         <GeolocateControl position="top-left" ref={geolocateControlRef} />

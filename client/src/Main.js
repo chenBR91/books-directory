@@ -7,7 +7,7 @@ import MapPage from "./pages/MapPage";
 
 const Main = () => {
   return (
-    <div>
+    <div className="main">
       <Header />
       <Routes>
         <Route path="/" element={<Books />} />

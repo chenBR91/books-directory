@@ -6,8 +6,6 @@ import LocationContext from "./LocationContext.js";
 import Main from "./Main";
 import "./App.css";
 
-//import dotenv from "dotenv"
-
 
 const App = () => {
   const [books, setBooks] = useState([]);
@@ -28,7 +26,6 @@ const App = () => {
     //debugger;
     //uploadAllDataBooks();
     navigatorLocation();
-    console.log('process', process.env.REACT_APP_API_KEY);
   }, []);
 
 

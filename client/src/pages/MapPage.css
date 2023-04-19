@@ -4,13 +4,11 @@
     display: flex;
     /* flex-wrap: nowrap; */
     justify-content: center;
-    border: 1px solid red;
+    border: 1px solid rgb(50, 149, 206);
 }
 
 
 .content {
-    height: 207px;
-    border: solid red;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -18,5 +16,10 @@
 
 .footer {
     display: flex;
-    justify-content: space-evenly;
+    justify-content: center;
+}
+
+.detail {
+    border: solid blue;
+    height: 195px;
 }
