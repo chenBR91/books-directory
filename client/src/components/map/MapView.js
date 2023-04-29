@@ -1,4 +1,11 @@
-import React, { useEffect, useState, useCallback, useRef } from "react";
+import React, {
+  useEffect,
+  useState,
+  useCallback,
+  useRef,
+  useContext,
+} from "react";
+import MapContext from "../../MapContext";
 import Map, {
   Marker,
   FullscreenControl,
@@ -13,9 +20,10 @@ import axios from "axios";
 
 function MapView() {
   const mapRef = useRef();
-  const [rtusData, setRtusData] = useState([])
-  const [allMarkerLocationObj, setAllMarkerLocationObj] = useState([]);
+  //const [allMarkerLocationObj, setAllMarkerLocationObj] = useState([]);
   const [popupInfo, setPopupInfo] = useState(null);
+  const { handdleClickOnMap, rtusData, setRtusData, setRtuDataPopup } =
+    useContext(MapContext);
 
 
   useEffect(() => {
@@ -24,21 +32,15 @@ function MapView() {
   }, []);
 
   useEffect(() => {
-    console.log("allMarkerLocationObj", allMarkerLocationObj);
-  }, [allMarkerLocationObj]);
+    console.log("rtusData", rtusData);
+  }, [rtusData]);
 
-
-  // const uploadAllLocation = () => {
-  //   axios.get("http://localhost:8000/api/location/all").then((res) => {
-  //     setAllMarkerLocationObj(res["data"]);
-  //   });
-  // };
-
+ 
   const uploadAllRtus = () => {
-    axios.get("http://localhost:8000/api/rtus/all/show-all").then(res => {
-      setRtusData(res["data"])
-    })
-  }
+    axios.get("http://localhost:8000/api/rtus/all/show-all").then((res) => {
+      setRtusData(res["data"]);
+    });
+  };
 
   const geolocateControlRef = useCallback((ref) => {
     if (ref) {
@@ -46,22 +48,6 @@ function MapView() {
       ref.trigger();
     }
   }, []);
-
-  const handdleClickOnMap = (e) => {
-    const { lng, lat } = e["lngLat"];
-    const updatedLocatioValue = {
-      longitude: lng,
-      latitude: lat,
-      anchor: "bottom",
-    };
-    setAllMarkerLocationObj([...allMarkerLocationObj, updatedLocatioValue]);
-
-    // Add location to database
-    const url = "http://localhost:8000/api/location/create";
-    axios.post(url, { longitude: lng, latitude: lat }).then((res) => {
-      console.log(res);
-    });
-  };
 
   return (
     <div>
@@ -72,10 +58,10 @@ function MapView() {
           latitude: 40,
           zoom: 1,
         }}
-        //onClick={handdleClickOnMap}
+        onClick={handdleClickOnMap}
         style={{ width: "100%", height: "600px" }}
         mapStyle="mapbox://styles/mapbox/streets-v12"
-        mapboxAccessToken= {process.env.REACT_APP_MAPBOX_TOKEN}
+        mapboxAccessToken={process.env.REACT_APP_MAPBOX_TOKEN}
       >
         <FullscreenControl />
         <GeolocateControl position="top-left" ref={geolocateControlRef} />
@@ -91,20 +77,22 @@ function MapView() {
             longitude={showMarker.location["longitude"]}
             latitude={showMarker.location["latitude"]}
             anchor="bottom"
-            onClick={e => {
+            onClick={(e) => {
               e.originalEvent.stopPropagation();
               setPopupInfo(showMarker);
+              setRtuDataPopup(showMarker);
             }}
           />
         ))}
-
 
         {popupInfo && (
           <Popup
             anchor="top"
             longitude={Number(popupInfo.location.longitude)}
             latitude={Number(popupInfo.location.latitude)}
-            onClose={() => setPopupInfo(null)}
+            onClose={() => {
+              setPopupInfo(null);
+            }}
           >
             <div>
               {popupInfo.location.longitude}, {popupInfo.location.latitude}
@@ -113,7 +101,6 @@ function MapView() {
             </div>
           </Popup>
         )}
-
       </Map>
     </div>
   );

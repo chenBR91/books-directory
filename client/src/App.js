@@ -31,7 +31,6 @@ const App = () => {
 
   // location of users 
   // Current location
-
   // const navigatorLocation = () => {
   //   navigator.geolocation.getCurrentPosition((position) => {console.log('fs', position.coords.latitude)})
   // }
@@ -65,7 +64,6 @@ const App = () => {
   }
 
 
-
   useEffect(()=>{
     console.log('latitude', location.latitude);
     console.log('longitude', location.longitude);
@@ -91,6 +89,7 @@ const App = () => {
     setListOfBooks(books);
   }, [books]);
 
+  
   const bookValue = {
     allBooks: books,
     setBooks,

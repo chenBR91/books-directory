@@ -2,11 +2,11 @@ import mongoose from "mongoose";
 
 const LocationsSchema = new mongoose.Schema({ 
     latitude: {
-        type: String,
+        type: Number,  // old String
         default: ""
     },
     longitude: {
-        type: String,
+        type: Number, // old String
         default: ""
     },
 })

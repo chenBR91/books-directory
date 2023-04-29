@@ -5,6 +5,7 @@ import {
   deleteOneRtuById,
   getOneRtuById,
   updateRtuByMacAddress,
+  deleteAllRtus,
 } from "../services/Rtus.js";
 
 import { deleteOneLocation } from "../services/Locations.js";
@@ -96,6 +97,23 @@ export const updateRtuParameters = async (req, res) => {
     res.status(200).send(updated);
 
   } catch( err) {
+    res.status(500).send(err)
+  }
+}
+
+
+export const deleteAllRtusController = async (req, res) => {
+  try {
+
+    const resDeleted = await deleteAllRtus();
+
+    if( resDeleted.acknowledged) {
+      console.log('success delete all rtus');
+    }
+
+    res.status(200).send("success");
+
+  } catch(err) {
     res.status(500).send(err)
   }
 }
