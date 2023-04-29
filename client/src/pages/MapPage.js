@@ -81,7 +81,7 @@ const MapPage = () => {
           <Box
             sx={{
               p: 2,
-              border: "1px dashed grey",
+              border: "0px dashed grey",
               width: 1300,
               height: 600,
               // mt: 9,

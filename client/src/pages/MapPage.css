@@ -4,7 +4,7 @@
     display: flex;
     /* flex-wrap: nowrap; */
     justify-content: center;
-    border: 1px solid rgb(50, 149, 206);
+    /* border: 0px solid rgb(50, 149, 206); */
 }
 
 
@@ -20,6 +20,6 @@
 }
 
 .detail {
-    border: solid blue;
+    /* border: 0px solid blue; */
     height: 195px;
 }
